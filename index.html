@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Bridge - Connecting Stakeholders</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-bridge"></i>
+                <span>Community Bridge</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#opportunities" class="nav-link">Opportunities</a>
+                <a href="#programs" class="nav-link">Programs</a>
+                <a href="#reports" class="nav-link">Reports</a>
+                <button class="btn btn-primary" onclick="showAuthModal()">Login / Register</button>
+            </div>
+            <div class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Bridging Communities for Collective Growth</h1>
+            <p>Connecting Government, Youth, Farmers, NGOs, and Companies in one unified platform for empowerment, opportunities, and transparency.</p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="total-users">0</div>
+                    <div class="stat-label">Active Users</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="total-opportunities">0</div>
+                    <div class="stat-label">Opportunities</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="total-programs">0</div>
+                    <div class="stat-label">Programs</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="total-reports">0</div>
+                    <div class="stat-label">Reports</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- User Dashboard (Hidden by default) -->
+    <section id="dashboard" class="dashboard hidden">
+        <div class="dashboard-header">
+            <h2>Welcome, <span id="user-name">User</span></h2>
+            <div class="user-info">
+                <span class="user-role" id="user-role">Role</span>
+                <button class="btn btn-outline" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Role-specific Dashboard Content -->
+        <div class="dashboard-content">
+            <!-- Youth Dashboard -->
+            <div id="youth-dashboard" class="role-dashboard hidden">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-briefcase"></i> Job Opportunities</h3>
+                        <div class="card-content">
+                            <div class="stat-large" id="youth-jobs">0</div>
+                            <p>Available positions</p>
+                            <button class="btn btn-primary" onclick="showOpportunities('job')">Browse Jobs</button>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-graduation-cap"></i> Skills Training</h3>
+                        <div class="card-content">
+                            <div class="stat-large" id="youth-training">0</div>
+                            <p>Training programs</p>
+                            <button class="btn btn-primary" onclick="showOpportunities('training')">View Training</button>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-laptop"></i> Remote Work</h3>
+                        <div class="card-content">
+                            <div class="stat-large" id="youth-remote">0</div>
+                            <p>Remote opportunities</p>
+                            <button class="btn btn-primary" onclick="showOpportunities('remote')">Find Remote Work</button>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-rocket"></i> Empowerment</h3>
+                        <div class="card-content">
+                            <div class="stat-large" id="youth-empowerment">0</div>
+                            <p>Empowerment programs</p>
+                            <button class="btn btn-primary" onclick="showPrograms('empowerment')">Join Programs</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Company Dashboard -->
+            <div id="company-dashboard" class="role-dashboard hidden">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-users"></i> Talent Pool</h3>
+                        <div class="card-content">
+                            <div class="stat-large" id="company-candidates">0</div>
+                            <p>Available candidates</p>
+                            <button class="btn btn-primary" onclick="viewTalentPool()">View Candidates</button>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-plus"></i> Post Jobs</h3>
+                        <div class="card-content">
+                            <div class="stat-large" id="company-jobs">0</div>
+                            <p>Active job posts</p>
+                            <button class="btn btn-primary" onclick="showCreateOpportunityModal('job')">Post Job</button>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-handshake"></i> CSR Programs</h3>
+                        <div class="card-content">
+                            <div class="stat-large" id="company-csr">0</div>
+                            <p>CSR initiatives</p>
+                            <button class="btn btn-primary" onclick="showCreateProgramModal('csr')">Create CSR</button>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-chart-line"></i> Recruitment</h3>
+                        <div class="card-content">
+                            <div class="stat-large" id="company-applications">0</div>
+                            <p>Applications received</p>
+                            <button class="btn btn-primary" onclick="viewApplications()">View Applications</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Government Dashboard -->
+            <div id="government-dashboard" class="role-dashboard hidden">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-seedling"></i> Farmer Programs</h3>
+                        <div class="card-content">
+                            <div class="stat-large" id="gov-farmer-programs">0</div>
+                            <p>Agricultural programs</p>
+                            <button class="btn btn-primary" onclick="showCreateProgramModal('agriculture')">Create Program</button>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-users-cog"></i> Youth Empowerment</h3>
+                        <div class="card-content">
+                            <div class="stat-large" id="gov-youth-programs">0</div>
+                            <p>Youth programs</p>
+                            <button class="btn btn-primary" onclick="showCreateProgramModal('youth-empowerment')">Create Program</button>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Reports</h3>
+                        <div class="card-content">
+                            <div class="stat-large" id="gov-reports">0</div>
+                            <p>Pending reports</p>
+                            <button class="btn btn-primary" onclick="viewReports()">Review Reports</button>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-briefcase"></i> Employment</h3>
+                        <div class="card-content">
+                            <div class="stat-large" id="gov-jobs">0</div>
+                            <p>Government positions</p>
+                            <button class="btn btn-primary" onclick="showCreateOpportunityModal('government-job')">Post Position</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NGO Dashboard -->
+            <div id="ngo-dashboard" class="role-dashboard hidden">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-heart"></i> Empowerment Programs</h3>
+                        <div class="card-content">
+                            <div class="stat-large" id="ngo-empowerment">0</div>
+                            <p>Active programs</p>
+                            <button class="btn btn-primary" onclick="showCreateProgramModal('empowerment')">Create Program</button>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-graduation-cap"></i> Training Programs</h3>
+                        <div class="card-content">
+                            <div class="stat-large" id="ngo-training">0</div>
+                            <p>Training initiatives</p>
+                            <button class="btn btn-primary" onclick="showCreateOpportunityModal('training')">Create Training</button>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-users"></i> Community Impact</h3>
+                        <div class="card-content">
+                            <div class="stat-large" id="ngo-beneficiaries">0</div>
+                            <p>People helped</p>
+                            <button class="btn btn-primary" onclick="viewImpactReport()">View Impact</button>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-hands-helping"></i> Partnerships</h3>
+                        <div class="card-content">
+                            <div class="stat-large" id="ngo-partnerships">0</div>
+                            <p>Active partnerships</p>
+                            <button class="btn btn-primary" onclick="viewPartnerships()">View Partners</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Farmer Dashboard -->
+            <div id="farmer-dashboard" class="role-dashboard hidden">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-seedling"></i> Agricultural Programs</h3>
+                        <div class="card-content">
+                            <div class="stat-large" id="farmer-programs">0</div>
+                            <p>Available programs</p>
+                            <button class="btn btn-primary" onclick="showPrograms('agriculture')">View Programs</button>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-graduation-cap"></i> Training</h3>
+                        <div class="card-content">
+                            <div class="stat-large" id="farmer-training">0</div>
+                            <p>Training opportunities</p>
+                            <button class="btn btn-primary" onclick="showOpportunities('agricultural-training')">Join Training</button>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-dollar-sign"></i> Financial Support</h3>
+                        <div class="card-content">
+                            <div class="stat-large" id="farmer-financial">0</div>
+                            <p>Support programs</p>
+                            <button class="btn btn-primary" onclick="showPrograms('financial-support')">Apply for Support</button>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-chart-bar"></i> Farm Statistics</h3>
+                        <div class="card-content">
+                            <div class="stat-large" id="farmer-stats">0</div>
+                            <p>Programs enrolled</p>
+                            <button class="btn btn-primary" onclick="viewFarmStats()">View Stats</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Civil Servant Dashboard -->
+            <div id="civil-servant-dashboard" class="role-dashboard hidden">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-flag"></i> Submit Report</h3>
+                        <div class="card-content">
+                            <div class="stat-large" id="civil-reports">0</div>
+                            <p>Reports submitted</p>
+                            <button class="btn btn-primary" onclick="showReportModal()">Report Issue</button>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-eye"></i> Monitor Services</h3>
+                        <div class="card-content">
+                            <div class="stat-large" id="civil-monitoring">0</div>
+                            <p>Services monitored</p>
+                            <button class="btn btn-primary" onclick="viewServiceMonitoring()">View Services</button>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-shield-alt"></i> Transparency</h3>
+                        <div class="card-content">
+                            <div class="stat-large" id="civil-transparency">0</div>
+                            <p>Transparency score</p>
+                            <button class="btn btn-primary" onclick="viewTransparencyReport()">View Report</button>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-clock"></i> Report Status</h3>
+                        <div class="card-content">
+                            <div class="stat-large" id="civil-pending">0</div>
+                            <p>Pending reports</p>
+                            <button class="btn btn-primary" onclick="viewReportStatus()">Check Status</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Opportunities Section -->
+    <section id="opportunities" class="opportunities">
+        <div class="container">
+            <h2>Opportunities Hub</h2>
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">All</button>
+                <button class="filter-tab" data-filter="job">Jobs</button>
+                <button class="filter-tab" data-filter="training">Training</button>
+                <button class="filter-tab" data-filter="remote">Remote Work</button>
+                <button class="filter-tab" data-filter="government-job">Government</button>
+            </div>
+            <div class="opportunities-grid" id="opportunities-grid">
+                <!-- Opportunities will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Programs Section -->
+    <section id="programs" class="programs">
+        <div class="container">
+            <h2>Community Programs</h2>
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">All</button>
+                <button class="filter-tab" data-filter="empowerment">Empowerment</button>
+                <button class="filter-tab" data-filter="agriculture">Agriculture</button>
+                <button class="filter-tab" data-filter="business">Business</button>
+                <button class="filter-tab" data-filter="social">Social</button>
+            </div>
+            <div class="programs-grid" id="programs-grid">
+                <!-- Programs will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Reports Section -->
+    <section id="reports" class="reports">
+        <div class="container">
+            <h2>Transparency & Reports</h2>
+            <div class="reports-stats">
+                <div class="report-stat">
+                    <div class="stat-number" id="reports-submitted">0</div>
+                    <div class="stat-label">Reports Submitted</div>
+                </div>
+                <div class="report-stat">
+                    <div class="stat-number" id="reports-resolved">0</div>
+                    <div class="stat-label">Reports Resolved</div>
+                </div>
+                <div class="report-stat">
+                    <div class="stat-number" id="reports-pending">0</div>
+                    <div class="stat-label">Pending Review</div>
+                </div>
+            </div>
+            <div class="reports-grid" id="reports-grid">
+                <!-- Reports will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Authentication Modal -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="auth-title">Login / Register</h3>
+                <button class="modal-close" onclick="hideAuthModal()">&times;</button>
+            </div>
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="showLogin()">Login</button>
+                <button class="auth-tab" onclick="showRegister()">Register</button>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="login-form" class="auth-form">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Login</button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="register-form" class="auth-form hidden">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="register-name" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="register-email" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="register-phone" required>
+                </div>
+                <div class="form-group">
+                    <label>Role</label>
+                    <select id="register-role" required>
+                        <option value="">Select Role</option>
+                        <option value="youth">Youth/Graduate</option>
+                        <option value="company">Company Representative</option>
+                        <option value="government">Government Official</option>
+                        <option value="ngo">NGO Representative</option>
+                        <option value="farmer">Farmer</option>
+                        <option value="civil-servant">Civil Servant</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="register-password" required>
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" id="register-confirm-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create Opportunity Modal -->
+    <div id="create-opportunity-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create Opportunity</h3>
+                <button class="modal-close" onclick="hideCreateOpportunityModal()">&times;</button>
+            </div>
+            <form id="create-opportunity-form">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="opportunity-title" required>
+                </div>
+                <div class="form-group">
+                    <label>Type</label>
+                    <select id="opportunity-type" required>
+                        <option value="job">Job Opportunity</option>
+                        <option value="training">Training Program</option>
+                        <option value="remote">Remote Work</option>
+                        <option value="government-job">Government Position</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="opportunity-description" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Requirements</label>
+                    <textarea id="opportunity-requirements" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" id="opportunity-location" required>
+                </div>
+                <div class="form-group">
+                    <label>Salary/Compensation (Optional)</label>
+                    <input type="text" id="opportunity-salary">
+                </div>
+                <div class="form-group">
+                    <label>Application Deadline</label>
+                    <input type="date" id="opportunity-deadline" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Create Opportunity</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create Program Modal -->
+    <div id="create-program-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create Program</h3>
+                <button class="modal-close" onclick="hideCreateProgramModal()">&times;</button>
+            </div>
+            <form id="create-program-form">
+                <div class="form-group">
+                    <label>Program Name</label>
+                    <input type="text" id="program-name" required>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="program-category" required>
+                        <option value="empowerment">Youth Empowerment</option>
+                        <option value="agriculture">Agricultural Support</option>
+                        <option value="business">Business Development</option>
+                        <option value="social">Social Welfare</option>
+                        <option value="csr">CSR Initiative</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="program-description" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Target Beneficiaries</label>
+                    <input type="text" id="program-beneficiaries" required>
+                </div>
+                <div class="form-group">
+                    <label>Duration</label>
+                    <input type="text" id="program-duration" required>
+                </div>
+                <div class="form-group">
+                    <label>Budget/Funding</label>
+                    <input type="text" id="program-budget">
+                </div>
+                <div class="form-group">
+                    <label>Start Date</label>
+                    <input type="date" id="program-start-date" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Create Program</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Report Issue Modal -->
+    <div id="report-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Submit Report</h3>
+                <button class="modal-close" onclick="hideReportModal()">&times;</button>
+            </div>
+            <form id="report-form">
+                <div class="form-group">
+                    <label>Report Type</label>
+                    <select id="report-type" required>
+                        <option value="">Select Type</option>
+                        <option value="corruption">Corruption</option>
+                        <option value="misconduct">Official Misconduct</option>
+                        <option value="service-failure">Service Failure</option>
+                        <option value="infrastructure">Infrastructure Issue</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Subject</label>
+                    <input type="text" id="report-subject" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="report-description" rows="5" required placeholder="Provide detailed information about the issue..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" id="report-location" required>
+                </div>
+                <div class="form-group">
+                    <label>Date of Incident</label>
+                    <input type="date" id="report-date" required>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="report-anonymous">
+                        Submit anonymously
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Submit Report</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="success-title">Success!</h3>
+                <button class="modal-close" onclick="hideSuccessModal()">&times;</button>
+            </div>
+            <div class="success-content">
+                <i class="fas fa-check-circle success-icon"></i>
+                <p id="success-message">Operation completed successfully!</p>
+                <button class="btn btn-primary" onclick="hideSuccessModal()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <span id="notification-message"></span>
+        <button class="notification-close" onclick="hideNotification()">&times;</button>
+    </div>
+
+    <script src="/script.js"></script>
+</body>
+</html>
